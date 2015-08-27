@@ -146,6 +146,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
         Flynsarmy\DbBladeCompiler\DbBladeCompilerServiceProvider::class,
+        App\Providers\MindbodyAuthServiceProvider::class,
 
     ],
 
