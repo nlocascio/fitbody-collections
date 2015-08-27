@@ -100,6 +100,9 @@ class CustomerController extends Controller {
      */
     public function refresh()
     {
+        // clear balances just so it's obvious if the below fails...
+        Customer::where('active', '=', 1)->update(['account_balance' => null]);
+
         $this->dispatch(
             new GetClientsFromMindbodyJob()
         );

@@ -33,8 +33,6 @@ class GetClientBalancesFromMindbodyJob extends Job implements SelfHandling {
 
         $clientsWithBalances = $this->getClientsWithBalances($customers->lists('mindbody_id')->toArray());
 
-        $customers->update(['account_balance' => null]);
-
         $this->updateClientBalances($clientsWithBalances);
     }
 
