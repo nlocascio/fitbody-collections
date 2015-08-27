@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
 use PDF;
 use DbView;
+use DB;
 
 class LetterController extends Controller {
 
@@ -76,14 +77,16 @@ class LetterController extends Controller {
 
         foreach ($customers as $k => $customer)
         {
+            DB::beginTransaction();
 
-            $filePath = storage_path() . "/app/letters/$customer->last_name-$customer->first_name-$request->form_letter_id-" . $date->toDateTimeString() . ".pdf";
-
-            $letters[$k] = new Letter([
-                'file_path'   => $filePath,
+            $letters[$k] = $customer->letters()->create([
                 'description' => $this->formLetters[$request->form_letter_id],
                 'amount'      => $customer->account_balance
             ]);
+
+            $filePath = storage_path() . "/app/letters/" . $letters[$k]->id . "-$customer->last_name-$customer->first_name-" . $date->toDateString() . ".pdf";
+
+            $letters[$k]->file_path = $filePath;
 
             $customer->letters()->save($letters[$k]);
 
@@ -91,6 +94,8 @@ class LetterController extends Controller {
 
             $pdf = PDF::loadHTML($letterData);
             $pdf->save($filePath);
+
+            DB::commit();
         }
 
         if ($request->has('saveAndDownload'))
@@ -106,8 +111,10 @@ class LetterController extends Controller {
     /**
      * Display the specified resource.
      *
-     * @param  int $id
-     * @return Response
+     * @param $customerId
+     * @param $letterId
+     * @throws \Exception
+     * @internal param int $id
      */
     public function show($customerId, $letterId)
     {
@@ -120,9 +127,7 @@ class LetterController extends Controller {
             $pdf->addPDF($letter->file_path);
         }
 
-        return $pdf->merge('download', 'print.pdf');
-
-//        return response()->download($letter->file_path);
+        $pdf->merge('download', 'print.pdf');
     }
 
     /**
