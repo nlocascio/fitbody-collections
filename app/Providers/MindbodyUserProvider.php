@@ -6,10 +6,11 @@ use App\Services\MindBodyService;
 use App\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Support\Facades\Log;
 
 class MindbodyUserProvider implements UserProvider {
 
-    protected $model;
+    public $model;
     protected $mindbodyApi;
 
     public function __construct(Authenticatable $model, MindBodyService $mindbodyApi)
@@ -98,6 +99,9 @@ class MindbodyUserProvider implements UserProvider {
 
         $user = User::firstOrNew(['username' => $credentials['username']]);
 
+        Log::debug("retrieveByCredentials: " . json_encode($user) . ' ' . json_encode($credentials));
+
+
         return $user;
     }
 
@@ -110,8 +114,12 @@ class MindbodyUserProvider implements UserProvider {
      */
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
+
+        Log::debug("validateCredentials: " . json_encode($user) . ' ' . json_encode($credentials));
+
         if ( ! $user->username == $credentials['username'])
         {
+            Log::debug("validateCredentials: login failed at " . __LINE__);
             return false;
         }
 
@@ -123,8 +131,11 @@ class MindbodyUserProvider implements UserProvider {
             ]
         ])->GetStaffResult;
 
+
         if ( ! isset ($getStaffResult->ErrorCode) || $getStaffResult->ErrorCode != 200)
         {
+            Log::debug("validateCredentials: login failed at " . __LINE__);
+            Log::debug("validateCredentials: " .json_encode($getStaffResult));
             return false;
         }
 
@@ -132,6 +143,7 @@ class MindbodyUserProvider implements UserProvider {
             'name' => isset($getStaffResult->StaffMembers->Staff->FirstName) ? $getStaffResult->StaffMembers->Staff->FirstName : null
         ]);
 
+        Log::debug("validateCredentials: login succeeded at " . __LINE__);
         return $user->save();
 
     }
