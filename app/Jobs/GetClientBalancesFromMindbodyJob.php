@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Customer;
 use App\Jobs\Job;
 use App\Services\MindBodyService;
+use Carbon\Carbon;
 use Illuminate\Contracts\Bus\SelfHandling;
 
 class GetClientBalancesFromMindbodyJob extends Job implements SelfHandling {
@@ -44,7 +45,7 @@ class GetClientBalancesFromMindbodyJob extends Job implements SelfHandling {
     {
         $allClients = $this->getClients($clientIds);
 
-        return(array_filter($allClients, function ($value)
+        return (array_filter($allClients, function ($value)
         {
             return $value->AccountBalance < 0;
         }));
@@ -56,11 +57,14 @@ class GetClientBalancesFromMindbodyJob extends Job implements SelfHandling {
      */
     public function getClients($clientIds)
     {
+        $time = Carbon::now()->addHours(24)->toDateString();
+
         $request = [
             'ClientIDs'        => $clientIds,
             'PageSize'         => 1000,
             'CurrentPageIndex' => 0,
             'XMLDetail'        => 'Bare',
+            'BalanceDate'      => $time,
             'Fields'           => [
                 'Clients.ID',
                 'Clients.AccountBalance',
