@@ -1,0 +1,29 @@
+{
+  "name": "fitbody-collections",
+  "version": "0.0.0",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "Chart.js": "~1.0.2",
+    "bootstrap": "~3.3.5",
+    "bootstrap-datepicker": "~1.4.0",
+    "bootstrap-multiselect": "~0.9.13",
+    "bootstrap-wysiwyg": "steveathon/bootstrap-wysiwyg#master",
+    "font-awesome": "fontawesome#~4.4.0",
+    "google-code-prettify": "~1.0.4",
+    "jquery": "~2.1.4",
+    "jquery.hotkeys": "*",
+    "tablesorter": "*"
+  },
+  "resolutions": {
+    "jquery.hotkeys": "master",
+    "bootstrap-wysiwyg": "master"
+  }
+}

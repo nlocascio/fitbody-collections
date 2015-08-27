@@ -1,0 +1,19 @@
+body {
+  padding-top: 30px;
+}
+
+#templateContentEditor {
+  max-height: 250px;
+  height: 250px;
+  border-collapse: separate;
+  box-sizing: content-box;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px 0px inset;
+  box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px 0px inset;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  border-top-left-radius: 3px;
+  overflow: scroll;
+  //outline: none;
+
+}
