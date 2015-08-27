@@ -147,7 +147,6 @@ return [
         Barryvdh\Snappy\ServiceProvider::class,
         Flynsarmy\DbBladeCompiler\DbBladeCompilerServiceProvider::class,
         App\Providers\MindbodyAuthServiceProvider::class,
-
     ],
 
     /*
