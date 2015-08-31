@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\View;
 use PDF;
 use DbView;
 use DB;
+use Response;
 
 class LetterController extends Controller {
 
@@ -127,7 +128,18 @@ class LetterController extends Controller {
             $pdf->addPDF($letter->file_path);
         }
 
-        $pdf->merge('download', 'print.pdf');
+        $headers = [
+            'Cache-Control'         => 'must-revalidate, post-check=0, pre-check=0'
+            , 'Content-type'        => 'application/pdf'
+            , 'Content-Disposition' => 'attachment; filename=download.pdf'
+            , 'Expires'             => '0'
+            , 'Pragma'              => 'public'
+        ];
+
+        return response($pdf->merge('string', 'print.pdf'))
+            ->header('Content-type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename=download.pdf')
+            ;
     }
 
     /**
