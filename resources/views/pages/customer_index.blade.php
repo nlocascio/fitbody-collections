@@ -6,9 +6,7 @@
 @section('dashhead-toolbar')
     <div class="btn-toolbar-item input-with-icon">
         <div class="btn-group pull-right">
-            {!! Form::open(['method' => 'post', 'class' => 'form-horizontal',' id' => 'customerRefreshForm', 'route' => ['customer.refresh']]) !!}
             {!! Form::button('<i class="fa fa-refresh"></i>', ['class' => 'btn btn-default-outline', 'id' => 'customerRefreshButton', 'type' => 'submit']) !!}
-            {!! Form::close() !!}
         </div>
     </div>
 @endsection
@@ -61,7 +59,7 @@
 
     <div class="table-full">
         <div class="table-responsive">
-            <table class="table" data-sort="table">
+            <table class="table" data-sort="table" id="customerTable">
                 <thead>
                 <tr>
                     <th class="col-sm-1 text-center"><input type="checkbox" id="CheckAll"></th>
@@ -73,29 +71,56 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach ($customers as $customer)
-                    <tr>
-                        <td class="text-center">
-                            {!! Form::checkbox('listCheckbox', $customer->id, false, ['class' => 'multiSelectCheckBox']) !!}
-                        </td>
-                        <td>
-                            <a href="{{ route('customer.show', $customer) }}">
-                                {{ $customer['last_name'] }}, {{ $customer['first_name'] }}
-                            </a>
-                        </td>
-                        <td class="text-right">${{ $customer['account_balance'] }}&nbsp;&nbsp;&nbsp;</td>
-                        <td class="text-right">{{ ($customer->emails()->count()) ?: null }}&nbsp;&nbsp;&nbsp;</td>
-                        <td class="text-right">{{ ($customer->letters()->count()) ?: null }}&nbsp;&nbsp;&nbsp;</td>
-                        <td></td>
-                    </tr>
-                @endforeach
                 </tbody>
+                <tfoot>
+                <tr class="working hide">
+                    <th colspan="6" class="text-center btn-default-outline"><i class="fa fa-refresh fa-spin" style="font-size:10em;"></i></th>
+                </tr>
+                </tfoot>
             </table>
         </div>
     </div>
-@endsection
+    @endsection
 
-@section('footerScripts')
+    @section('footerScripts')
+    <!-- Pusher -->
+    <script src="https://js.pusher.com/2.2/pusher.min.js"></script>
+    <script>
+
+        getCustomerData = function () {
+            $.get( '{{ route('customer.index') }}', { _token: '{{ csrf_token() }}' }, function(html) {
+                $('#customerTable tbody').html(html).trigger('update');
+                $('#customerRefreshButton').prop('disabled', false).removeClass('disabled');
+                $('#customerRefreshButton i').removeClass('fa-spin');
+                $('#customerTable tr.working').addClass('hide');
+            } );
+        }
+
+        @if(App::isLocal())
+        // Enable pusher logging - don't include this in production
+        Pusher.log = function (message) {
+            if (window.console && window.console.log) {
+                window.console.log(message);
+            }
+        };
+        @endif
+
+        var pusher = new Pusher('66e4d463903ea22a972b', {
+            encrypted: true
+        });
+
+        var channel = pusher.subscribe('customerAction');
+
+        channel.bind('App\\Events\\UpdatedCustomers', function (data) {
+            if (data.isComplete = true) {
+                getCustomerData();
+            }
+        });
+
+        getCustomerData();
+    </script>
+
+    <!-- App -->
     <script>
         $('#createLetterLink').on('click', function () {
             var values = [];
@@ -119,10 +144,14 @@
             window.location.href = href;
         });
 
-        $('#customerRefreshForm').submit(function() {
-//            $('button[type="submit"]').prop('disabled', true);
-            $('#customerRefreshForm button[type="submit"]').addClass('disabled')
-            $('#customerRefreshForm i').addClass('fa-spin')
+        $('#customerRefreshButton').click(function () {
+            $('#customerRefreshButton').prop('disabled', true).addClass('disabled');
+            $('#customerRefreshButton i').addClass('fa-spin')
+            $('#customerTable tr.working').removeClass('hide');
+
+            $('#customerTable tbody').empty().trigger('update');
+
+            $.post( '{{ route('customer.refresh') }}', { _token: '{{ csrf_token() }}' } );
         });
 
     </script>
