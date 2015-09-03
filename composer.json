@@ -17,7 +17,9 @@
         "predis/predis": "^1.0",
         "pda/pheanstalk": "~3.0",
         "guzzlehttp/guzzle": "^6.0",
-        "flynsarmy/db-blade-compiler": "^2.0"
+        "flynsarmy/db-blade-compiler": "^2.0",
+        "pusher/pusher-php-server": "~2.0",
+        "bugsnag/bugsnag-laravel": "1.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -147,6 +147,8 @@ return [
         Barryvdh\Snappy\ServiceProvider::class,
         Flynsarmy\DbBladeCompiler\DbBladeCompilerServiceProvider::class,
         App\Providers\MindbodyAuthServiceProvider::class,
+        Bugsnag\BugsnagLaravel\BugsnagLaravelServiceProvider::class,
+
     ],
 
     /*
@@ -199,6 +201,7 @@ return [
         'PDF'       => Barryvdh\Snappy\Facades\SnappyPdf::class,
         'Image'     => Barryvdh\Snappy\Facades\SnappyImage::class,
         'DbView'    => Flynsarmy\DbBladeCompiler\Facades\DbView::class,
+        'Bugsnag'   => Bugsnag\BugsnagLaravel\BugsnagFacade::class
 
 
     ],
