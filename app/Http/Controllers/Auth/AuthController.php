@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -23,7 +22,9 @@ class AuthController extends Controller
 
     use AuthenticatesUsers, ThrottlesLogins;
 
-    protected $redirectPath = '/';
+    protected $redirectPath = '/dashboard';
+    protected $loginPath = '/auth/login';
+
     protected $username = 'username';
 
     /**

@@ -12,147 +12,146 @@
 @endsection
 
 @section('content')
-    <div class="hr-divider">
-        <h3 class="hr-divider-content hr-divider-heading">Quick stats</h3>
+<div class="hr-divider">
+    <h3 class="hr-divider-content hr-divider-heading">Quick stats</h3>
+</div>
+<div class="row statcards text-xs-center">
+    <div class="col-xs-12 col-sm-6 statcard">
+        <h3 class="statcard-number text-success">
+            {{ $customers->count() }}
+            <small class="delta-indicator delta-positive"></small>
+        </h3>
+        <span class="statcard-desc">Delinquent Accounts</span>
     </div>
-    <div class="row statcards text-xs-center">
-        <div class="col-xs-12 col-sm-6 statcard">
-            <h3 class="statcard-number text-success">
-                {{ $customers->count() }}
-                <small class="delta-indicator delta-positive"></small>
-            </h3>
-            <span class="statcard-desc">Delinquent Accounts</span>
-        </div>
-        <div class="col-xs-12 col-sm-6 statcard">
-            <h3 class="statcard-number text-danger">
-                ${{ abs($customers->sum('account_balance')) }}
-                <small class="delta-indicator delta-negative"></small>
-            </h3>
-            <span class="statcard-desc">Owed</span>
-        </div>
+    <div class="col-xs-12 col-sm-6 statcard">
+        <h3 class="statcard-number text-danger">
+            ${{ abs($customers->sum('account_balance')) }}
+            <small class="delta-indicator delta-negative"></small>
+        </h3>
+        <span class="statcard-desc">Owed</span>
     </div>
+</div>
 
-    <div class="flextable table-actions">
-        <div class="flextable-item flextable-primary">
-            <div class="btn-toolbar-item input-with-icon">
-                <input type="text" class="form-control input-block" placeholder="Search customers">
-                <span class="icon icon-magnifying-glass"></span>
+<div class="flextable table-actions">
+    <div class="flextable-item flextable-primary">
+        <div class="btn-toolbar-item input-with-icon">
+            <input type="text" class="form-control input-block" placeholder="Search customers">
+            <span class="icon icon-magnifying-glass"></span>
+        </div>
+    </div>
+    <div class="flextable-item">
+        <div class="form-group">
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary-outline dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    <span class="icon icon-export"></span> <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li><a href="#" id="createLetterLink"><span class="icon icon-newsletter"></span> Create
+                            Letter</a>
+                    </li>
+                    <li><a href="#" id="createEmailLink"><span class="icon icon-mail"></span> Create Email</a></li>
+                </ul>
             </div>
         </div>
-        <div class="flextable-item">
-            <div class="form-group">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary-outline dropdown-toggle" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                        <span class="icon icon-export"></span> <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu pull-right" role="menu">
-                        <li><a href="#" id="createLetterLink"><span class="icon icon-newsletter"></span> Create
-                                Letter</a>
-                        </li>
-                        <li><a href="#" id="createEmailLink"><span class="icon icon-mail"></span> Create Email</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
     </div>
+</div>
 
-    <div class="table-full">
-        <div class="table-responsive">
-            <table class="table" data-sort="table" id="customerTable">
-                <thead>
-                <tr>
-                    <th class="col-sm-1 text-center"><input type="checkbox" id="CheckAll"></th>
-                    <th class="col-sm-3">Name</th>
-                    <th class="col-sm-1 text-right">Balance</th>
-                    <th class="col-sm-1">Emails</th>
-                    <th class="col-sm-1">Letters</th>
-                    <th class="col-sm-5"></th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                <tfoot>
-                <tr class="working hide">
-                    <th colspan="6" class="text-center btn-default-outline"><i class="fa fa-refresh fa-spin" style="font-size:10em;"></i></th>
-                </tr>
-                </tfoot>
-            </table>
-        </div>
+<div class="table-full">
+    <div class="table-responsive">
+        <table class="table" data-sort="table" id="customerTable">
+            <thead>
+            <tr>
+                <th class="col-sm-1 text-center"><input type="checkbox" id="CheckAll"></th>
+                <th class="col-sm-3">Name</th>
+                <th class="col-sm-2">Phone</th>
+                <th class="col-sm-1 text-right">Balance</th>
+                <th class="col-sm-1">Emails</th>
+                <th class="col-sm-1">Letters</th>
+                <th class="col-sm-3"></th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr class="working hide">
+                <th colspan="6" class="text-center btn-default-outline"><i class="fa fa-refresh fa-spin" style="font-size:10em;"></i></th>
+            </tr>
+            </tfoot>
+        </table>
     </div>
-    @endsection
+</div>
+@endsection
 
-    @section('footerScripts')
-    <!-- Pusher -->
-    <script src="https://js.pusher.com/2.2/pusher.min.js"></script>
-    <script>
+@section('footerScripts')
+<!-- Pusher -->
+<script>
+    getCustomerData = function () {
+        $.get( '{{ route('customer.index') }}', { _token: '{{ csrf_token() }}' }, function(html) {
+            $('#customerTable tbody').html(html).trigger('update');
+            $('#customerRefreshButton').prop('disabled', false).removeClass('disabled');
+            $('#customerRefreshButton i').removeClass('fa-spin');
+            $('#customerTable tr.working').addClass('hide');
+        } );
+    }
 
-        getCustomerData = function () {
-            $.get( '{{ route('customer.index') }}', { _token: '{{ csrf_token() }}' }, function(html) {
-                $('#customerTable tbody').html(html).trigger('update');
-                $('#customerRefreshButton').prop('disabled', false).removeClass('disabled');
-                $('#customerRefreshButton i').removeClass('fa-spin');
-                $('#customerTable tr.working').addClass('hide');
-            } );
+    @if(App::isLocal())
+    // Enable pusher logging - don't include this in production
+    Pusher.log = function (message) {
+        if (window.console && window.console.log) {
+            window.console.log(message);
         }
+    };
+    @endif
 
-        @if(App::isLocal())
-        // Enable pusher logging - don't include this in production
-        Pusher.log = function (message) {
-            if (window.console && window.console.log) {
-                window.console.log(message);
-            }
-        };
-        @endif
+    var pusher = new Pusher('66e4d463903ea22a972b', {
+        encrypted: true
+    });
 
-        var pusher = new Pusher('66e4d463903ea22a972b', {
-            encrypted: true
-        });
+    var channel = pusher.subscribe('customerAction');
 
-        var channel = pusher.subscribe('customerAction');
+    channel.bind('App\\Events\\UpdatedCustomers', function (data) {
+        if (data.isComplete = true) {
+            getCustomerData();
+        }
+    });
 
-        channel.bind('App\\Events\\UpdatedCustomers', function (data) {
-            if (data.isComplete = true) {
-                getCustomerData();
-            }
-        });
+    getCustomerData();
+</script>
 
-        getCustomerData();
-    </script>
+<!-- App -->
+<script>
+    $('#createLetterLink').on('click', function () {
+        var values = [];
 
-    <!-- App -->
-    <script>
-        $('#createLetterLink').on('click', function () {
-            var values = [];
+        $('input:checkbox[name=listCheckbox]:checked').each(function () {
+            values.push($(this).val());
+        })
 
-            $('input:checkbox[name=listCheckbox]:checked').each(function () {
-                values.push($(this).val());
-            })
+        var href = '/customer/' + values.join('+') + '/letter/create';
+        window.location.href = href;
+    });
 
-            var href = '/customer/' + values.join('+') + '/letter/create';
-            window.location.href = href;
-        });
+    $('#createEmailLink').on('click', function () {
+        var values = [];
 
-        $('#createEmailLink').on('click', function () {
-            var values = [];
+        $('input:checkbox[name=listCheckbox]:checked').each(function () {
+            values.push($(this).val());
+        })
 
-            $('input:checkbox[name=listCheckbox]:checked').each(function () {
-                values.push($(this).val());
-            })
+        var href = '/customer/' + values.join('+') + '/email/create';
+        window.location.href = href;
+    });
 
-            var href = '/customer/' + values.join('+') + '/email/create';
-            window.location.href = href;
-        });
+    $('#customerRefreshButton').click(function () {
+        $('#customerRefreshButton').prop('disabled', true).addClass('disabled');
+        $('#customerRefreshButton i').addClass('fa-spin')
+        $('#customerTable tr.working').removeClass('hide');
 
-        $('#customerRefreshButton').click(function () {
-            $('#customerRefreshButton').prop('disabled', true).addClass('disabled');
-            $('#customerRefreshButton i').addClass('fa-spin')
-            $('#customerTable tr.working').removeClass('hide');
+        $('#customerTable tbody').empty().trigger('update');
 
-            $('#customerTable tbody').empty().trigger('update');
+        $.post( '{{ route('customer.refresh') }}', { _token: '{{ csrf_token() }}' } );
+    });
 
-            $.post( '{{ route('customer.refresh') }}', { _token: '{{ csrf_token() }}' } );
-        });
-
-    </script>
+</script>
 @endsection

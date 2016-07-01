@@ -4,9 +4,11 @@ namespace App\Jobs;
 
 use App\Customer;
 use App\Jobs\Job;
-use App\Services\MindBodyService;
 use Carbon\Carbon;
 use Illuminate\Contracts\Bus\SelfHandling;
+use Illuminate\Support\Facades\Log;
+use Nlocascio\Mindbody\Facades\Mindbody;
+use Nlocascio\Mindbody\Services\MindbodyService;
 
 class GetClientBalancesFromMindbodyJob extends Job implements SelfHandling {
 
@@ -24,17 +26,19 @@ class GetClientBalancesFromMindbodyJob extends Job implements SelfHandling {
     /**
      * Execute the job.
      *
-     * @param MindBodyService $mindbodyApi
+     * @return string
      */
-    public function handle(MindBodyService $mindbodyApi)
+    public function handle()
     {
-        $this->mindbodyApi = $mindbodyApi;
+        Log::info('Retrieving MINDBODY Client Balances...');
 
         $customers = Customer::where('active', '=', 1);
 
         $clientsWithBalances = $this->getClientsWithBalances($customers->lists('mindbody_id')->toArray());
 
         $this->updateClientBalances($clientsWithBalances);
+
+        Log::info('Successfully retrieved ' & count($clientsWithBalances) & ' MINDBODY Client Balances.');
     }
 
     /**
@@ -57,27 +61,25 @@ class GetClientBalancesFromMindbodyJob extends Job implements SelfHandling {
      */
     public function getClients($clientIds)
     {
-        $time = Carbon::now()->addHours(24)->toDateString();
-
         $request = [
             'ClientIDs'        => $clientIds,
             'PageSize'         => 1000,
             'CurrentPageIndex' => 0,
             'XMLDetail'        => 'Bare',
-            'BalanceDate'      => $time,
+            'BalanceDate'      => Carbon::now()->addDay()->toDateString(),
             'Fields'           => [
                 'Clients.ID',
                 'Clients.AccountBalance',
             ]];
 
-        $data = $this->mindbodyApi->GetClientAccountBalances($request)->GetClientAccountBalancesResult;
+        $response = Mindbody::GetClientAccountBalances($request)->GetClientAccountBalancesResult;
 
-        if ($data->ErrorCode != 200 || ! isset($data->Clients->Client))
+        if ($response->ErrorCode != 200 || ! isset($response->Clients->Client))
         {
             abort(500, 'MindBody API Call failed.');
         }
 
-        return $data->Clients->Client;
+        return $response->Clients->Client;
     }
 
     /**
@@ -86,6 +88,8 @@ class GetClientBalancesFromMindbodyJob extends Job implements SelfHandling {
      */
     public function updateClientBalances($clients)
     {
+        $this->clearAllClientBalances();
+
         foreach ($clients as $d)
         {
             Customer::updateOrCreate(['mindbody_id' => $d->ID],
@@ -93,6 +97,10 @@ class GetClientBalancesFromMindbodyJob extends Job implements SelfHandling {
                     'account_balance' => $d->AccountBalance
                 ]);
         }
-        return true;
+    }
+
+    protected function clearAllClientBalances()
+    {
+        Customer::whereNotNull('id')->update(['account_balance' => null]);
     }
 }

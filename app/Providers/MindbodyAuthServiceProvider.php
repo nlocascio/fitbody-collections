@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Services\MindBodyService;
 use App\User;
 use Auth;
 use Illuminate\Support\ServiceProvider;
@@ -18,7 +17,7 @@ class MindbodyAuthServiceProvider extends ServiceProvider
     {
         Auth::extend('mindbody', function($app) {
             // Return an instance of Illuminate\Contracts\Auth\UserProvider...
-            return new MindbodyUserProvider(new User, new MindBodyService);
+            return new MindbodyUserProvider(new User);
         });
     }
 

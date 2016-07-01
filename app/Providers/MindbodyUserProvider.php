@@ -2,21 +2,20 @@
 
 namespace App\Providers;
 
-use App\Services\MindBodyService;
 use App\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Support\Facades\Log;
+use Nlocascio\Mindbody\Facades\Mindbody;
 
 class MindbodyUserProvider implements UserProvider {
 
     public $model;
     protected $mindbodyApi;
 
-    public function __construct(Authenticatable $model, MindBodyService $mindbodyApi)
+    public function __construct(Authenticatable $model)
     {
         $this->model = $model;
-        $this->mindbodyApi = $mindbodyApi;
     }
 
     /**
@@ -56,6 +55,7 @@ class MindbodyUserProvider implements UserProvider {
         if ($user != null)
         {
             $user->setRememberToken($token);
+            $user->save();
         }
     }
 
@@ -69,38 +69,7 @@ class MindbodyUserProvider implements UserProvider {
     {
         $user = null;
 
-//        $getStaffResult = $this->mindbodyApi->GetStaff([
-//            'StaffCredentials' => [
-//                'SiteIDs' => [27796],
-//            ],
-//        ])->GetStaffResult;
-//
-//        if ( ! isset ($getStaffResult->ErrorCode) || ! $getStaffResult->ErrorCode == 200)
-//        {
-//            abort(500, "Mindbody API error.");
-//        }
-//
-//        if ( ! isset ($getStaffResult->StaffMembers) || ! count($getStaffResult->StaffMembers) > 0)
-//        {
-//            abort(500, "Mindbody returned no users.");
-//        }
-//
-//        foreach ($getStaffResult->StaffMembers->Staff as $staffMember)
-//        {
-//            if ( ! isset($staffMember->Email) || $staffMember->ID <= 0) continue;
-//            if ($staffMember->Email == $credentials['email'])
-//            {
-//                $user = User::firstOrNew(['email' => $credentials['email']])->fill([
-//                    'name' => "$staffMember->FirstName $staffMember->LastName",
-//                ]);
-//                $user->save();
-//            }
-//        }
-
         $user = User::firstOrNew(['username' => $credentials['username']]);
-
-        Log::debug("retrieveByCredentials: " . json_encode($user) . ' ' . json_encode($credentials));
-
 
         return $user;
     }
@@ -115,17 +84,14 @@ class MindbodyUserProvider implements UserProvider {
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
 
-        Log::debug("validateCredentials: " . json_encode($user) . ' ' . json_encode($credentials));
-
         if ( ! $user->username == $credentials['username'])
         {
-            Log::debug("validateCredentials: login failed at " . __LINE__);
             return false;
         }
 
-        $getStaffResult = $this->mindbodyApi->GetStaff([
+        $getStaffResult = Mindbody::GetStaff([
             'StaffCredentials' => [
-                'SiteIDs'  => [27796],
+                'SiteIDs' => [27796],
                 'Username' => $credentials['username'],
                 'Password' => $credentials['password'],
             ]
@@ -134,8 +100,6 @@ class MindbodyUserProvider implements UserProvider {
 
         if ( ! isset ($getStaffResult->ErrorCode) || $getStaffResult->ErrorCode != 200)
         {
-            Log::debug("validateCredentials: login failed at " . __LINE__);
-            Log::debug("validateCredentials: " .json_encode($getStaffResult));
             return false;
         }
 
@@ -143,7 +107,6 @@ class MindbodyUserProvider implements UserProvider {
             'name' => isset($getStaffResult->StaffMembers->Staff->FirstName) ? $getStaffResult->StaffMembers->Staff->FirstName : null
         ]);
 
-        Log::debug("validateCredentials: login succeeded at " . __LINE__);
         return $user->save();
 
     }

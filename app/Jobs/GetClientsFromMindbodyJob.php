@@ -6,6 +6,7 @@ use App\Customer;
 use App\Jobs\Job;
 use App\Services\MindBodyService;
 use Illuminate\Contracts\Bus\SelfHandling;
+use Nlocascio\Mindbody\Facades\Mindbody;
 
 class GetClientsFromMindbodyJob extends Job implements SelfHandling {
 
@@ -25,10 +26,8 @@ class GetClientsFromMindbodyJob extends Job implements SelfHandling {
      *
      * @param MindBodyService $mindBodyApi
      */
-    public function handle(MindBodyService $mindBodyApi)
+    public function handle()
     {
-        $this->mindBodyApi = $mindBodyApi;
-
         $clients = $this->getClients();
 
         $this->deactivateMissingClients($clients);
@@ -66,17 +65,14 @@ class GetClientsFromMindbodyJob extends Job implements SelfHandling {
                 'Clients.PhotoURL',
             ]];
 
-        $getClientsData = $this->mindBodyApi
-            ->sendUserCredentials()
-            ->GetClients($request)
-            ->GetClientsResult;
+        $response = Mindbody::GetClients($request)->GetClientsResult;
 
-        if ($getClientsData->ErrorCode != 200 || ! isset($getClientsData->Clients->Client))
+        if ($response->ErrorCode != 200 || ! isset($response->Clients->Client))
         {
             abort(500, 'MindBody API Call failed.');
         }
 
-        return $getClientsData->Clients->Client;
+        return $response->Clients->Client;
     }
 
     /**

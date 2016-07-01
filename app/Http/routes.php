@@ -11,6 +11,11 @@
 |
 */
 
+Route::get('/', ['as' => 'welcome', function ()
+{
+    return view('pages.welcome');
+}]);
+
 // Authentication routes...
 Route::get('auth/login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController@getLogin']);
 Route::post('auth/login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController@postLogin']);
@@ -18,7 +23,7 @@ Route::get('auth/logout', ['as' => 'auth.logout', 'uses' => 'Auth\AuthController
 
 Route::group(['middleware' => 'auth'], function ()
 {
-    Route::get('/', ['as' => 'home', function ()
+    Route::get('/dashboard', ['as' => 'home', function ()
     {
         return view('pages.home');
     }]);
@@ -26,6 +31,8 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('customer.letter', 'LetterController');
     Route::resource('customer.email', 'EmailController');
     Route::post('customer/refresh', ['as' => 'customer.refresh', 'uses' => 'CustomerController@refresh']);
-    Route::resource('customer', 'CustomerController');
+
+    Route::resource('customers', 'CustomerController');
+
     Route::resource('template', 'TemplateController');
 });

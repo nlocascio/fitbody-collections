@@ -2,6 +2,8 @@
 
 return [
 
+    'name' => 'Mintery',
+
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
@@ -13,7 +15,7 @@ return [
     |
     */
 
-    'debug'           => env('APP_DEBUG', false),
+    'debug' => env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -26,7 +28,7 @@ return [
     |
     */
 
-    'url'             => 'http://localhost',
+    'url' => 'http://localhost',
 
     /*
     |--------------------------------------------------------------------------
@@ -39,7 +41,7 @@ return [
     |
     */
 
-    'timezone'        => 'UTC',
+    'timezone' => 'UTC',
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +54,7 @@ return [
     |
     */
 
-    'locale'          => 'en',
+    'locale' => 'en',
 
     /*
     |--------------------------------------------------------------------------
@@ -78,9 +80,9 @@ return [
     |
     */
 
-    'key'             => env('APP_KEY', 'SomeRandomString'),
+    'key' => env('APP_KEY', 'SomeRandomString'),
 
-    'cipher'          => 'AES-256-CBC',
+    'cipher' => 'AES-256-CBC',
 
     /*
     |--------------------------------------------------------------------------
@@ -95,7 +97,7 @@ return [
     |
     */
 
-    'log'             => 'single',
+    'log' => 'single',
 
     /*
     |--------------------------------------------------------------------------
@@ -108,7 +110,7 @@ return [
     |
     */
 
-    'providers'       => [
+    'providers' => [
 
         /*
          * Laravel Framework Service Providers...
@@ -148,6 +150,7 @@ return [
         Flynsarmy\DbBladeCompiler\DbBladeCompilerServiceProvider::class,
         App\Providers\MindbodyAuthServiceProvider::class,
         Bugsnag\BugsnagLaravel\BugsnagLaravelServiceProvider::class,
+        Nlocascio\Mindbody\Providers\MindbodyServiceProvider::class
 
     ],
 
@@ -162,7 +165,7 @@ return [
     |
     */
 
-    'aliases'         => [
+    'aliases' => [
 
         'App'       => Illuminate\Support\Facades\App::class,
         'Artisan'   => Illuminate\Support\Facades\Artisan::class,
@@ -201,8 +204,8 @@ return [
         'PDF'       => Barryvdh\Snappy\Facades\SnappyPdf::class,
         'Image'     => Barryvdh\Snappy\Facades\SnappyImage::class,
         'DbView'    => Flynsarmy\DbBladeCompiler\Facades\DbView::class,
-        'Bugsnag'   => Bugsnag\BugsnagLaravel\BugsnagFacade::class
-
+        'Bugsnag'   => Bugsnag\BugsnagLaravel\BugsnagFacade::class,
+        'Mindbody'  => Nlocascio\Mindbody\Facades\Mindbody::class
 
     ],
 

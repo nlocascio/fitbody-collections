@@ -8,6 +8,7 @@
                 {{ $customer['last_name'] }}, {{ $customer['first_name'] }}
             </a>
         </td>
+        <td class="">{{ $customer['mobile_phone'] }}&nbsp;&nbsp;&nbsp;</td>
         <td class="text-right">${{ $customer['account_balance'] }}&nbsp;&nbsp;&nbsp;</td>
         <td class="text-right">{{ ($customer->emails()->count()) ?: null }}&nbsp;&nbsp;&nbsp;</td>
         <td class="text-right">{{ ($customer->letters()->count()) ?: null }}&nbsp;&nbsp;&nbsp;</td>

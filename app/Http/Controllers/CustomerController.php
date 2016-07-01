@@ -3,26 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Customer;
-use App\Jobs\GetClientBalancesFromMindbodyJob;
-use App\Jobs\GetClientsFromMindbodyJob;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Events\UpdateCustomersEvent;
+use App\Events\UpdatingCustomers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Queue;
 
 class CustomerController extends Controller {
 
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $customers = Customer::where('account_balance', '<', 0)->get();
+        if ($request->ajax()) {
+            $customers = Customer::where('account_balance', '<', 0)->get();
 
-        return view('pages.customer_index', ['customers' => $customers]);
+            return response()->json($customers);
+        }
+
+        return view('pages.customers');
     }
 
     /**
@@ -58,7 +63,7 @@ class CustomerController extends Controller {
     {
         $customer = Customer::findOrFail($id);
 
-        return view('pages.customer_show',['customer' => $customer]);
+        return view('pages.customer_show',['customer' => $customer, 'letters' => $customer->letters, 'emails' => $customer->emails ]);
     }
 
     /**
@@ -101,16 +106,21 @@ class CustomerController extends Controller {
     public function refresh()
     {
         // clear balances just so it's obvious if the below fails...
-        Customer::where('active', '=', 1)->update(['account_balance' => null]);
 
-        $this->dispatch(
-            new GetClientsFromMindbodyJob()
-        );
 
-        $this->dispatch(
-            new GetClientBalancesFromMindbodyJob()
-        );
+//        Customer::where('active', '=', 1)->update(['account_balance' => null]);
+//
+//        $this->dispatch(
+//            new GetClientsFromMindbodyJob()
+//        );
+//
+//        $this->dispatch(
+//            new GetClientBalancesFromMindbodyJob()
+//        );
 
-        return redirect()->back();
+
+        event(new UpdatingCustomers());
+
+        return response('OK', 200);
     }
 }

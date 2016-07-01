@@ -13,11 +13,11 @@
         <div class="collapse nav-toggleable-sm" id="nav-toggleable-sm">
             <ul class="nav nav-pills nav-stacked">
                 <li class="nav-header">Dashboards</li>
-                <li class="@if (Request::is('/')) active @endif">
-                    <a href="/">Home</a>
+                <li class="@if (Request::is('/dashboard')) active @endif">
+                    <a href="/dashboard">Home</a>
                 </li>
-                <li class="@if (Request::is('customer')) active @endif">
-                    <a href="/customer">Customers</a>
+                <li class="@if (Request::is('customers'))) active @endif">
+                    <a href="/customers">Customers</a>
                 </li>
                 <li class="@if (Request::is('customer/*/letter*')) active @endif">
                     <a href="/customer/*/letter">Letters</a>

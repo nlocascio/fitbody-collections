@@ -14,8 +14,22 @@
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
-        'email' => $faker->email,
-        'password' => bcrypt(str_random(10)),
+        'username' => $faker->userName,
         'remember_token' => str_random(10),
+    ];
+});
+
+$factory->define(App\Letter::class, function (Faker\Generator $faker) {
+    return [
+        'file_path' => '/var/null',
+        'description' => $faker->name,
+        'amount' => $faker->numberBetween(50, 500)
+    ];
+});
+
+$factory->define(App\Email::class, function (Faker\Generator $faker) {
+    return [
+        'content' => $faker->paragraphs(3),
+        'subject' => $faker->sentence(6)
     ];
 });

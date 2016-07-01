@@ -54,8 +54,11 @@ class SendCustomerEmailJob extends Job implements SelfHandling, ShouldQueue
 
         Mail::send('emails.dbview', ['emailView' => $emailView], function ($message) use ($template, $customer)
         {
-            $message->subject($template->title);
-            $message->to($customer->email, "$customer->first_name $customer->last_name");
+            $message
+                ->from('nlocascio@getmyfitbody.com', 'Nick LoCascio')
+                ->to($customer->email, "$customer->first_name $customer->last_name")
+                ->subject($template->title)
+            ;
         });
 
         $email = new Email([
