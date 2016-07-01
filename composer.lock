@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c73ebc2cec53ebc6f09f487cb070ed2f",
-    "content-hash": "acc35ce8d8b1fa82599e686a6e6eeda9",
+    "hash": "053672dd9286ce30f4492fc6a1175ee6",
+    "content-hash": "aada70ad63a92ecfd3e3674314603b92",
     "packages": [
         {
             "name": "barryvdh/laravel-snappy",
@@ -1461,6 +1461,11 @@
         {
             "name": "nlocascio/mindbody-laravel",
             "version": "master",
+            "source": {
+                "type": "git",
+                "url": "git@bitbucket.org:nlocascio/mindbody-laravel.git",
+                "reference": "194961d29f9082afa5dd1413073b55eb9f2ec51c"
+            },
             "dist": {
                 "type": "path",
                 "url": "/Users/nlocascio/Code/packages/mindbody-laravel",
