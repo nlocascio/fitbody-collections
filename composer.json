@@ -69,6 +69,10 @@
     {
       "type": "path",
       "url": "/Users/nlocascio/Code/packages/mindbody-laravel"
+    },
+    {
+      "type": "vcs",
+      "url":"git@bitbucket.org:nlocascio/mindbody-laravel.git"
     }
   ]
 }
