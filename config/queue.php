@@ -15,7 +15,6 @@ return [
     |            "sqs", "iron", "redis"
     |
     */
-
     'default' => env('QUEUE_DRIVER', 'sync'),
 
     /*
