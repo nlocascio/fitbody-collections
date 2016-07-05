@@ -20,7 +20,7 @@
     "predis/predis": "^1.0",
     "pda/pheanstalk": "~3.0",
     "guzzlehttp/guzzle": "^6.0",
-    "flynsarmy/db-blade-compiler": "^2.0",
+    "flynsarmy/db-blade-compiler": "3.*",
     "pusher/pusher-php-server": "~2.0",
     "bugsnag/bugsnag-laravel": "1.*",
     "nlocascio/mindbody-laravel": "dev-master"

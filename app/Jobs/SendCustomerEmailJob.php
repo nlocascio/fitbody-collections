@@ -7,14 +7,13 @@ use App\Jobs\Job;
 use App\Template;
 use App\Email;
 use Carbon\Carbon;
+use Flynsarmy\DbBladeCompiler\Facades\DbView;
 use Mail;
-use DbView;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendCustomerEmailJob extends Job implements SelfHandling, ShouldQueue
+class SendCustomerEmailJob extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
     /**
@@ -50,7 +49,7 @@ class SendCustomerEmailJob extends Job implements SelfHandling, ShouldQueue
         $template = $this->template;
         $customer = $this->customer;
 
-        $emailView = DbView::make($template, ['date' => $date->toFormattedDateString(), 'customer' => $customer]);
+        $emailView = DbView::make($template)->with(['date' => $date->toFormattedDateString(), 'customer' => $customer])->render();
 
         Mail::send('emails.dbview', ['emailView' => $emailView], function ($message) use ($template, $customer)
         {

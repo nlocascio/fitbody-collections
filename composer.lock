@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8d3e86d2641d9690524f5026a7673e1d",
-    "content-hash": "b9e19a9867e13b3146a59fb6043e3cc1",
+    "hash": "51ee681a71707fd7bfc36f5eb8648904",
+    "content-hash": "627e52131b10e0bfba29556c56f82f82",
     "packages": [
         {
             "name": "barryvdh/laravel-snappy",
@@ -348,11 +348,17 @@
         },
         {
             "name": "flynsarmy/db-blade-compiler",
-            "version": "v2.0.2",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Flynsarmy/laravel-db-blade-compiler.git",
-                "reference": "011658034c5ca14d42c64c7f1024f7cc9811fdb3"
+                "reference": "1830fca410abe29ebbf8f873975e31aae8a6e6ba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Flynsarmy/laravel-db-blade-compiler/zipball/1830fca410abe29ebbf8f873975e31aae8a6e6ba",
+                "reference": "1830fca410abe29ebbf8f873975e31aae8a6e6ba",
+                "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
@@ -363,6 +369,7 @@
                     "Flynsarmy\\DbBladeCompiler\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -385,7 +392,7 @@
                 "laravel",
                 "model"
             ],
-            "time": "2015-06-15 22:21:08"
+            "time": "2016-03-28 22:21:01"
         },
         {
             "name": "guzzlehttp/guzzle",
