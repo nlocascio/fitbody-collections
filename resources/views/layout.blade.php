@@ -14,6 +14,9 @@
     <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic" rel="stylesheet">
     <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.1/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
 
+    <script>
+        const PUSHER_KEY = '{{ config('broadcasting.connections.pusher.key') }}';
+    </script>
 
 </head>
 <body id="app" v-cloak>
@@ -62,9 +65,10 @@
 {{--<script src="/js/Chart.min.js"></script>--}}
 {{--<script src="/js/chartjs-data-api.js"></script>--}}
 {{--<script src="/js/pusher.min.js"></script>--}}
-@yield('footerScripts')
 
 <script src="/js/app.js"></script>
+
+@yield('footerScripts')
 
 @if (session('download_on_next_page'))
     <script type="text/javascript">

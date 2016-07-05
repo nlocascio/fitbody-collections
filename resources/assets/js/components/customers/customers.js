@@ -69,13 +69,13 @@ Vue.component('app-customers', {
     },
 
     ready () {
-        this.getCustomers()
-
         var channel = Window.pusher.subscribe('user');
 
         channel.bind('App\\Events\\UpdatedCustomers', () => {
             this.getCustomers();
         });
+
+        this.getCustomers()
 
         console.log('Customers loaded.')
     }
