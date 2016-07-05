@@ -5,23 +5,12 @@ namespace App\Jobs;
 use App\Customer;
 use App\Jobs\Job;
 use Carbon\Carbon;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Support\Facades\Log;
 use Nlocascio\Mindbody\Facades\Mindbody;
-use Nlocascio\Mindbody\Services\MindbodyService;
 
-class GetClientBalancesFromMindbodyJob extends Job implements SelfHandling {
+class GetClientBalancesFromMindbodyJob extends Job {
 
     protected $mindbodyApi;
-
-    /**
-     * Create a new job instance.
-     *
-     */
-    public function __construct()
-    {
-        //
-    }
 
     /**
      * Execute the job.

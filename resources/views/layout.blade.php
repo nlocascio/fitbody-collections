@@ -62,9 +62,9 @@
 {{--<script src="/js/Chart.min.js"></script>--}}
 {{--<script src="/js/chartjs-data-api.js"></script>--}}
 {{--<script src="/js/pusher.min.js"></script>--}}
-<script src="/js/app.js"></script>
-
 @yield('footerScripts')
+
+<script src="/js/app.js"></script>
 
 @if (session('download_on_next_page'))
     <script type="text/javascript">

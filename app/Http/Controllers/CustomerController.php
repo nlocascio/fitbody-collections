@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Customer;
 use App\Events\UpdateCustomersEvent;
 use App\Events\UpdatingCustomers;
+use App\Jobs\UpdateCustomersJob;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -103,21 +104,7 @@ class CustomerController extends Controller {
      */
     public function refresh()
     {
-        // clear balances just so it's obvious if the below fails...
-
-
-//        Customer::where('active', '=', 1)->update(['account_balance' => null]);
-//
-//        $this->dispatch(
-//            new GetClientsFromMindbodyJob()
-//        );
-//
-//        $this->dispatch(
-//            new GetClientBalancesFromMindbodyJob()
-//        );
-
-
-        event(new UpdatingCustomers());
+        $this->dispatch(new UpdateCustomersJob);
 
         return response('OK', 200);
     }

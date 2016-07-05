@@ -86,15 +86,10 @@
 @section('footerScripts')
 <!-- Pusher -->
 <script>
-    getCustomerData = function () {
-        $.get( '{{ route('customer.index') }}', { _token: '{{ csrf_token() }}' }, function(html) {
-            $('#customerTable tbody').html(html).trigger('update');
-            $('#customerRefreshButton').prop('disabled', false).removeClass('disabled');
-            $('#customerRefreshButton i').removeClass('fa-spin');
-            $('#customerTable tr.working').addClass('hide');
-        } );
-    }
-
+    console.log('here');
+</script>
+<script src="https://js.pusher.com/3.1/pusher.min.js"></script>
+<script>
     @if(App::isLocal())
     // Enable pusher logging - don't include this in production
     Pusher.log = function (message) {
@@ -104,19 +99,9 @@
     };
     @endif
 
-    var pusher = new Pusher('66e4d463903ea22a972b', {
+    Window.pusher = new Pusher( '{{ config('broadcasting.connections.pusher.key') }}', {
         encrypted: true
     });
-
-    var channel = pusher.subscribe('customerAction');
-
-    channel.bind('App\\Events\\UpdatedCustomers', function (data) {
-        if (data.isComplete = true) {
-            getCustomerData();
-        }
-    });
-
-    getCustomerData();
 </script>
 
 <!-- App -->

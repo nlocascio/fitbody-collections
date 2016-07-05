@@ -11,7 +11,6 @@ Vue.component('app-customers', {
 
     computed: {
         totalBalances () {
-            // return _.reduce(parseInt(_.pluck(this.customers, 'account_balance')), (memo, num) => { return memo + num }, 0)
             return Math.abs(
                 _.reduce(
                     _.pluck(this.customers, 'account_balance'), (memo, num) => { return memo + num }, 0)
@@ -41,10 +40,7 @@ Vue.component('app-customers', {
 
         resyncCustomers () {
             this.fullScreenBusy = true;
-            this.$http.post('/customer/refresh', {})
-                .then(() => {
-                    this.getCustomers()
-                })
+            this.$http.post('/customer/refresh', {});
         },
 
         accountBalance(number) {
@@ -74,6 +70,12 @@ Vue.component('app-customers', {
 
     ready () {
         this.getCustomers()
+
+        var channel = Window.pusher.subscribe('user');
+
+        channel.bind('App\\Events\\UpdatedCustomers', () => {
+            this.getCustomers();
+        });
 
         console.log('Customers loaded.')
     }

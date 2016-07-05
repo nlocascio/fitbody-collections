@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\UpdateCustomersJob;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -16,5 +17,17 @@ class CustomerControllerTest extends AppTester
 
         $this->seeInElement('.dashhead-title', 'Customers');
 
+    }
+
+    /** @test */
+    public function it_refreshes_the_customer_data()
+    {
+        $this->actingAs($this->makeUser());
+
+        $this->expectsJobs(UpdateCustomersJob::class);
+
+        $this->post('/customer/refresh', []);
+
+        $this->assertResponseOk();
     }
 }

@@ -3,23 +3,12 @@
 namespace App\Jobs;
 
 use App\Customer;
-use App\Jobs\Job;
 use App\Services\MindBodyService;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Nlocascio\Mindbody\Facades\Mindbody;
 
-class GetClientsFromMindbodyJob extends Job implements SelfHandling {
+class GetClientsFromMindbodyJob extends Job {
 
     protected $mindBodyApi;
-
-    /**
-     * Create a new job instance.
-     *
-     */
-    public function __construct()
-    {
-        //
-    }
 
     /**
      * Execute the job.
@@ -35,7 +24,6 @@ class GetClientsFromMindbodyJob extends Job implements SelfHandling {
         $this->storeClients($clients);
 
         return;
-
 
     }
 

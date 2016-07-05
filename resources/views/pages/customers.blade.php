@@ -145,3 +145,23 @@
 
     </app-customers>
 @endsection
+
+
+@section('footerScripts')
+    <!-- Pusher -->
+    <script src="https://js.pusher.com/3.1/pusher.min.js"></script>
+    <script>
+        @if(App::isLocal())
+        // Enable pusher logging - don't include this in production
+        Pusher.log = function (message) {
+            if (window.console && window.console.log) {
+                window.console.log(message);
+            }
+        };
+        @endif
+
+                Window.pusher = new Pusher( '{{ config('broadcasting.connections.pusher.key') }}', {
+            encrypted: true
+        });
+    </script>
+@endsection

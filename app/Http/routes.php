@@ -31,8 +31,10 @@ Route::group(['middleware' => 'auth'], function ()
     Route::get('/letters', 'LetterController@index');
     Route::get('/emails', 'EmailController@index');
 
+
     Route::resource('customer.letter', 'LetterController');
     Route::resource('customer.email', 'EmailController');
+
     Route::post('customer/refresh', ['as' => 'customer.refresh', 'uses' => 'CustomerController@refresh']);
 
     Route::resource('customers', 'CustomerController');
