@@ -1,6 +1,7 @@
 @import '../../../vendor/theme-dashboard/dist/toolkit-inverse';
 @import '../../../node_modules/bootstrap-multiselect/dist/css/bootstrap-multiselect';
 @import '../../../node_modules/sweetalert/dist/sweetalert';
+@import '../../../node_modules/summernote/dist/summernote';
 
 [v-cloak] {
   display: none;
@@ -61,8 +62,8 @@ $primary: #1ca8dd;
 }
 
 #templateContentEditor {
-  max-height: 250px;
-  height: 250px;
+  height: 300px;
+  max-height: 300px;
   border-collapse: separate;
   box-sizing: content-box;
   -webkit-box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px 0px inset;
@@ -90,4 +91,8 @@ $primary: #1ca8dd;
     left:50%;
     text-align: center;
   }
+}
+
+.table > tbody > tr > td {
+  border-top: none;
 }

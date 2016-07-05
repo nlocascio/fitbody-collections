@@ -59,10 +59,8 @@ class CustomerController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function show($id)
+    public function show(Customer $customer)
     {
-        $customer = Customer::findOrFail($id);
-
         return view('pages.customer_show',['customer' => $customer, 'letters' => $customer->letters, 'emails' => $customer->emails ]);
     }
 

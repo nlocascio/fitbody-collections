@@ -30,11 +30,11 @@ class EmailController extends Controller {
      *
      * @return Response
      */
-    public function index($customerId)
+    public function index()
     {
-        $emails = ($customerId == '*') ? Email::with('customer')->get() : Email::where('customer_id', $customerId)->get();
+        $emails = Email::with('customer')->get();
 
-        return view('pages.email_index', ['emails' => $emails, 'customerId' => $customerId]);
+        return view('pages.email_index', ['emails' => $emails]);
 
     }
 

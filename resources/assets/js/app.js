@@ -4,6 +4,7 @@ window.$ = window.jQuery = require('jquery')
 window.Bootstrap = require('bootstrap')
 window.BootstrapMultiselect = require('bootstrap-multiselect')
 window.SweetAlert = require('sweetalert')
+window.Summernote = require('summernote')
 window.Vue = require('vue')
 window.VueResource = require('vue-resource')
 

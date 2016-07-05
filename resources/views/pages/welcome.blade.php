@@ -7,7 +7,7 @@
 
     <title></title>
 
-    <link rel="stylesheet" href="{{ elixir('css/all.css') }}">
+    <link rel="stylesheet" href="/css/app.css">
 
 </head>
 <body id="welcome">
@@ -60,7 +60,7 @@
 <script src="/js/Chart.min.js"></script>
 <script src="/js/chartjs-data-api.js"></script>
 <script src="/js/pusher.min.js"></script>
-<script src="{{ elixir('js/app.js') }}"></script>
+<script src="/js/app.js"></script>
 
 </body>
 </html>

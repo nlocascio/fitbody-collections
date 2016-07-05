@@ -15,7 +15,7 @@ class MindbodyAuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Auth::extend('mindbody', function($app) {
+        Auth::provider('mindbody', function($app) {
             // Return an instance of Illuminate\Contracts\Auth\UserProvider...
             return new MindbodyUserProvider(new User);
         });

@@ -19,7 +19,7 @@
         <div class="flextable-item">
             <div class="form-group">
                 <div class="btn-group">
-                    <a href="/customer/{{$customerId}}/letter/create" type="button" class="btn btn-primary-outline">
+                    <a href="/customer/_/letter/create" type="button" class="btn btn-primary-outline">
                         <span class="icon icon-new-message"></span>
                     </a>
                     <a href="#" type="button" class="btn btn-primary-outline" id="printLetterButton">
@@ -48,7 +48,7 @@
                 letterIds.push($(this).val());
             })
 
-            var href = '{{ route('customer.letter.show', '*') }}/' + letterIds.join('+');
+            var href = '/' + letterIds.join('+');
             window.location.href = href;
         });
 
@@ -59,7 +59,7 @@
                 letterIds.push($(this).val());
             });
 
-            $('#deleteLettersForm').attr('action', '{{ route('customer.letter.destroy','*') }}/' + letterIds.join('+'));
+            $('#deleteLettersForm').attr('action', '/' + letterIds.join('+'));
 
         });
 

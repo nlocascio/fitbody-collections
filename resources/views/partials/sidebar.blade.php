@@ -19,11 +19,11 @@
                 <li class="@if (Request::is('customers'))) active @endif">
                     <a href="/customers">Customers</a>
                 </li>
-                <li class="@if (Request::is('customer/*/letter*')) active @endif">
-                    <a href="/customer/*/letter">Letters</a>
+                <li class="@if (Request::is('letters/*')) active @endif">
+                    <a href="/letters">Letters</a>
                 </li>
-                <li class="@if (Request::is('customer/*/email*')) active @endif">
-                    <a href="/customer/*/email">Emails</a>
+                <li class="@if (Request::is('emails/*')) active @endif">
+                    <a href="/emails">Emails</a>
                 </li>
 
 

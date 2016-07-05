@@ -34,11 +34,11 @@ class LetterController extends Controller {
      *
      * @return Response
      */
-    public function index($customerId, Request $request)
+    public function index()
     {
-        $letters = ($customerId == '*') ? Letter::with('customer')->get() : Letter::where('customer_id', $customerId)->get();
+        $letters = Letter::with('customer')->get();
 
-        return view('pages.letter_index', ['letters' => $letters, 'customerId' => $customerId]);
+        return view('pages.letter_index', ['letters' => $letters]);
 
     }
 

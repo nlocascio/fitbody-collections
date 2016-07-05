@@ -19,7 +19,7 @@
         <div class="flextable-item">
             <div class="form-group">
                 <div class="btn-group">
-                    <a href="/customer/{{$customerId}}/email/create" type="button" class="btn btn-primary-outline">
+                    <a href="/customer/email/create" type="button" class="btn btn-primary-outline">
                         <span class="icon icon-new-message"></span>
                     </a>
                     <a href="#" type="button" class="btn btn-primary-outline" id="printLmailButton">
@@ -48,7 +48,7 @@
                 emailIds.push($(this).val());
             })
 
-            var href = '{{ route('customer.email.show', '*') }}/' + emailIds.join('+');
+            var href = '/' + emailIds.join('+');
             window.location.href = href;
         });
 
@@ -59,7 +59,7 @@
                 emailIds.push($(this).val());
             });
 
-            $('#deleteLmailsForm').attr('action', '{{ route('customer.email.destroy','*') }}/' + emailIds.join('+'));
+            $('#deleteLmailsForm').attr('action', '/' + emailIds.join('+'));
 
         });
 

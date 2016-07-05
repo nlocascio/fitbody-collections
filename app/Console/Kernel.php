@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        Commands\NightlySyncCommand::class
     ];
 
     /**
@@ -29,14 +30,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule
-            ->call(function () {
-                $this->dispatch(new GetClientsFromMindbodyJob);
-            })
-            ->dailyAt('07:00')// 3:00 am local
-            ->then(function () {
-                $this->dispatch(new GetClientBalancesFromMindbodyJob);
-            })
+            ->command('collections:nightly-sync')
+            ->dailyAt('07:00')          // 3:00 am local
             ->sendOutputTo(storage_path('app/taskoutput.txt'))
             ->emailOutputTo('nlocascio@gmail.com');
+
     }
 }
