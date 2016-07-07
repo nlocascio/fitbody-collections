@@ -9,6 +9,7 @@
     "bootstrap-multiselect": "^0.9.13-1",
     "bootstrap-sass": "^3.0.0",
     "bootstrap-wysiwyg": "^1.0.4",
+    "codemirror": "^5.16.0",
     "jquery": "^3.0.0",
     "js-cookie": "^2.1.2",
     "laravel-elixir": "^5.0.0",

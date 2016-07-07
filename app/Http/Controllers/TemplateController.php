@@ -43,7 +43,7 @@ class TemplateController extends Controller {
         $template = new Template([
             'name'    => $request->name,
             'title'   => $request->title,
-            'content' => html_entity_decode($request->input('content')),
+            'content' => trim(html_entity_decode($request->input('content'))),
         ]);
 
         $template->save();
@@ -88,8 +88,12 @@ class TemplateController extends Controller {
         Template::findOrFail($templateId)->update([
             'name'    => $request->name,
             'title'   => $request->title,
-            'content' => html_entity_decode($request->input('content')),
+            'content' => trim(html_entity_decode($request->input('content'))),
         ]);
+
+        if ($request->ajax()) {
+            return response('OK');
+        }
 
         return redirect()->route('template.index');
 

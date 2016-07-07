@@ -23,6 +23,8 @@ Route::get('auth/logout', ['as' => 'auth.logout', 'uses' => 'Auth\AuthController
 
 Route::group(['middleware' => 'auth'], function ()
 {
+    Route::singularResourceParameters();
+
     Route::get('/dashboard', ['as' => 'home', function ()
     {
         return view('pages.home');

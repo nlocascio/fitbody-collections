@@ -5,11 +5,14 @@ window.Bootstrap = require('bootstrap')
 window.BootstrapMultiselect = require('bootstrap-multiselect')
 window.SweetAlert = require('sweetalert')
 window.Summernote = require('summernote')
+window.Codemirror = require('codemirror')
 window.Vue = require('vue')
+
 window.VueResource = require('vue-resource')
 
 Vue.config.debug = true
 Vue.config.devtools = true
+Vue.http.emulateHTTP = true
 
 Vue.http.interceptors.push(
     require('./interceptors')

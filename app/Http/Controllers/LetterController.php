@@ -93,6 +93,8 @@ class LetterController extends Controller {
 
             $letterData = DbView::make($template, ['date' => $date->toFormattedDateString(), 'customer' => $customer])->render();
 
+            $letterData = preg_replace('/[[:^print:]]/', '', $letterData);
+
             $pdf = PDF::loadHTML($letterData);
             $pdf->save($filePath);
 

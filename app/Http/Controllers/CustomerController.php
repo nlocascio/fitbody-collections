@@ -57,7 +57,7 @@ class CustomerController extends Controller {
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param Customer $customers
      * @return Response
      */
     public function show(Customer $customer)
