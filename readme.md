@@ -2,7 +2,9 @@
 
 Built on Laravel + Vue, this repo fetches client data from MINDBODY API and provides an interface to contact customers with account balances.
 
-Customizable Email and letter templates.
+Customer data is automatically retrieved nightly and stored locally. Data can be refreshed manually by the user at any point.
+
+Customizable HTML Email and letter templates.
 
 Capable of sending batches or Emails or creating batches of PDF letters.
 
